@@ -1,7 +1,22 @@
-import dlib
+import os
+import functions
 import cv2
+import tryGender
 
-predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
 
-detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor(predictor_path)
+train_dir_women = './Dataset_Pol/zene'
+train_dir_men = './Dataset_Pol/muskarci'
+
+img_path = os.path.join(train_dir_men, '50.png')
+img = functions.load_image(img_path)
+
+# cv2.imshow('Naziv', img)
+# cv2.waitKey()
+
+tekst = tryGender.prepoznaj(img)
+print(tekst)
+
+
+
+
+
