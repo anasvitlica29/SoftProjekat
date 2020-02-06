@@ -9,26 +9,28 @@ import numpy as np
 
 with open('mrezaPol','rb') as f:
 
-    novi = pickle.load(f)
+    model = pickle.load(f)   #load existing model
 
-def rastojanje(pozicija1,pozicija2):
-    x = (pozicija1[0] - pozicija2[0]) * (pozicija1[0] - pozicija2[0])
-    y = (pozicija1[1] - pozicija2[1]) * (pozicija1[1] - pozicija2[1])
-    res=np.sqrt(x+y)
-    return res
 
-def prepoznaj(slika):
+def distance(a,b):
+    # Euklidska udaljenost
+    x = (a[0] - b[0]) * (a[0] - b[0])
+    y = (a[1] - b[1]) * (a[1] - b[1])
+    result=np.sqrt(x+y)
+    return result
 
+
+def recognize(img):
+    # load dlib detector and predictor
     predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
-
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
 
     ulazNovi = []
     ulaz = []
 
-    lik = slika
-    tackeLica = prepoznavanjeLica.prepoznajLice(lik, detector, predictor)
+    face = img
+    tackeLica = prepoznavanjeLica.prepoznajLice(face, detector, predictor)   #Extracts 68 dots
     levaObrva = (tackeLica[19, 0], tackeLica[19, 1])
     desnaObrva = (tackeLica[24, 0], tackeLica[24, 1])
     gornjaSrednja = ((levaObrva[0] + desnaObrva[0]) / 2, (levaObrva[1] + desnaObrva[1]) / 2)
@@ -51,7 +53,7 @@ def prepoznaj(slika):
     ustaGoreLevo = (tackeLica[50, 0], tackeLica[50, 1])
     ustaGoreDesno = (tackeLica[52, 0], tackeLica[52, 1])
 
-    visinaLica = rastojanje(gornjaSrednja, brada)
+    visinaLica = distance(gornjaSrednja, brada)
 
     ulaz.append(levaObrva)
     ulaz.append(desnaObrva)
@@ -80,17 +82,17 @@ def prepoznaj(slika):
         for dr in xrange(br + 1, svi.shape[0]):
             pozicija1 = svi[br]
             pozicija2 = svi[dr]
-            rastojanja.append(visinaLica / rastojanje(pozicija1, pozicija2))
+            rastojanja.append(visinaLica / distance(pozicija1, pozicija2))
     ulazNovi.append(rastojanja)
     input1 = np.asarray(ulazNovi)
-    t = novi.predict(input1)
+    t = model.predict(input1)
 
-    tekst=''
+    ret=''
     if(t[0][0]>t[0][1]):
-        tekst='MUSKARAC'
+        ret='MALE'
     else:
-        tekst='ZENA'
+        ret='FEMALE'
 
     # print t
     # print tekst
-    return tekst
+    return ret

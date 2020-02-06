@@ -119,7 +119,7 @@ model.add(Dense(2))
 model.add(Activation('sigmoid'))
 sgd = SGD(lr=0.1, decay=0.001, momentum=0.7)
 model.compile(loss='mean_squared_error', optimizer=sgd)
-training = model.fit(ulazNiz, izlazNiz, nb_epoch=20, batch_size=400, verbose=1)
+training = model.fit(ulazNiz, izlazNiz, nb_epoch=2500, batch_size=400, verbose=1)
 
 with open('mrezaPol', 'wb') as f:
     pickle.dump(model, f)

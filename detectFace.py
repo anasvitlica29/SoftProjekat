@@ -24,11 +24,12 @@ def findFace(img):
         shape = face_utils.shape_to_np(shape)
 
         (x, y, w, h) = cropping(shape)
-        if (w > wMax):
+        if w > wMax:
             (xMax, yMax, wMax, hMax) = (x, y, w, h)
-    if wMax == 0:
-        return img
-    return cropImage(img, xMax, yMax, wMax, hMax, width, height)
+    return (xMax, yMax, wMax, hMax)
+    # if wMax == 0:
+    #     return img
+    # return cropImage(img, xMax, yMax, wMax, hMax, width, height)
 
 
 def cropping(shape):

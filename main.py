@@ -13,7 +13,19 @@ img = functions.load_image(img_path)
 # cv2.imshow('Naziv', img)
 # cv2.waitKey()
 
-tekst = tryGender.prepoznaj(img)
+#test sa web cam
+camera = cv2.VideoCapture(0)
+for i in range(5):
+    return_value, image = camera.read()
+    cv2.imwrite('opencv' + str(i) + '.png', image)
+del camera
+
+img_path = os.path.join('./', 'opencv2.png')
+img = functions.load_image(img_path)
+
+# cv2.imshow('ja', img)
+# cv2.waitKey()
+tekst = tryGender.recognize(img)
 print(tekst)
 
 
