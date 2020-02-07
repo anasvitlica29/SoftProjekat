@@ -8,21 +8,16 @@ from keras.optimizers import SGD
 import pickle
 
 
-def prepoznajLice(frame, detector, predictor):
+def findFace(frame, detector, predictor):
     try:
-        # type: # (object, object, object) -> object
         dets = detector(frame, 1)
-        matrica = np.matrix([[p.x, p.y] for p in predictor(frame, dets[0]).parts()])
-        # for i in xrange(0, 27):
-        # pozicija = (matrica[ i, 0], matrica[ i, 1])
-        # cv2.circle(frame, pozicija, 5, (0, 0, 255), 1)
-
-        return matrica
+        ret = np.matrix([[p.x, p.y] for p in predictor(frame, dets[0]).parts()])
+        return ret
     except:
         pass
 
 
-def rastojanje(pozicija1, pozicija2):
+def euclidean_distance(pozicija1, pozicija2):
     x = (pozicija1[0] - pozicija2[0]) * (pozicija1[0] - pozicija2[0])
     y = (pozicija1[1] - pozicija2[1]) * (pozicija1[1] - pozicija2[1])
     res = np.sqrt(x + y)
@@ -31,7 +26,7 @@ def rastojanje(pozicija1, pozicija2):
 
 def proporcije(slika, predictor, detector):
     ulaz = []
-    tackeLica = prepoznajLice(slika, detector, predictor)
+    tackeLica = findFace(slika, detector, predictor)
 
     levaObrva = (tackeLica[19, 0], tackeLica[19, 1])
     desnaObrva = (tackeLica[24, 0], tackeLica[24, 1])
@@ -55,7 +50,7 @@ def proporcije(slika, predictor, detector):
     ustaGoreLevo = (tackeLica[50, 0], tackeLica[50, 1])
     ustaGoreDesno = (tackeLica[52, 0], tackeLica[52, 1])
 
-    visinaLica = rastojanje(gornjaSrednja, brada)
+    visinaLica = euclidean_distance(gornjaSrednja, brada)
 
     ulaz.append(levaObrva)
     ulaz.append(desnaObrva)
@@ -79,12 +74,13 @@ def proporcije(slika, predictor, detector):
     ulaz.append(ustaGoreLevo)
     ulaz.append(ustaGoreDesno)
     svi = np.asarray(ulaz)
+
     rastojanja = []
     for br in xrange(0, svi.shape[0] - 1):
         for dr in xrange(br + 1, svi.shape[0]):
             pozicija1 = svi[br]
             pozicija2 = svi[dr]
-            rastojanja.append(visinaLica / rastojanje(pozicija1, pozicija2))
+            rastojanja.append(visinaLica / euclidean_distance(pozicija1, pozicija2))
     return rastojanja
 
 
@@ -119,7 +115,7 @@ model.add(Dense(2))
 model.add(Activation('sigmoid'))
 sgd = SGD(lr=0.1, decay=0.001, momentum=0.7)
 model.compile(loss='mean_squared_error', optimizer=sgd)
-training = model.fit(ulazNiz, izlazNiz, nb_epoch=2500, batch_size=400, verbose=1)
+training = model.fit(ulazNiz, izlazNiz, nb_epoch=3000, batch_size=400, verbose=1)
 
 with open('mrezaPol', 'wb') as f:
     pickle.dump(model, f)
