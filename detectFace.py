@@ -5,10 +5,8 @@ import math
 import cv2
 import copy
 
-
 width = 268
 height = 268
-
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('./dlib/shape_predictor_68_face_landmarks.dat')
 
@@ -47,6 +45,6 @@ def cropping(shape):
 
 
 def cropImage(img, x, y, w, h, width, height):
-    img = img[y:y+h, x:x+w]
+    img = img[y:y + h, x:x + w]
     img = cv2.resize(img, (width, height))
     return img
