@@ -9,6 +9,8 @@ from keras.models import Sequential, Model
 from keras.optimizers import RMSprop
 
 
+#Za kreiranje modela za prepoznavanje osobe
+
 def get_data(size, total_sample_size):
     # read the image
     # image = read_image('Data_Recognition/s' + str(1) + '/' + str(1) + '.jpg', 'rw+')

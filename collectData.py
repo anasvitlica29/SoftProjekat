@@ -1,5 +1,6 @@
 import cv2
 
+# Za skupljanje slika za dataset
 
 def capture_images():
     cam = cv2.VideoCapture(0)

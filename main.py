@@ -27,6 +27,7 @@ def prepareImages():
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         (x, y, w, h) = detectFace.findFace(gray)  # dlib in action
+        print(x)
         roi_gray = gray[y:y + h, x:x + w]  # region of interest
         resized = cv2.resize(roi_gray, (width, height), interpolation=cv2.INTER_CUBIC)
 

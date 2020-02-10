@@ -2,6 +2,8 @@ import cv2
 import detectFace
 import tryGender
 
+#Za live odredjivanje pola
+
 cap = cv2.VideoCapture(0)
 cnt = 0
 while True:

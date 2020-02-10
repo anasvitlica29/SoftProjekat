@@ -25,7 +25,7 @@ def euclidean_distance(pozicija1, pozicija2):
 
 
 def proporcije(slika, predictor, detector):
-    ulaz = []
+    X = []
     tackeLica = findFace(slika, detector, predictor)
 
     levaObrva = (tackeLica[19, 0], tackeLica[19, 1])
@@ -52,28 +52,28 @@ def proporcije(slika, predictor, detector):
 
     visinaLica = euclidean_distance(gornjaSrednja, brada)
 
-    ulaz.append(levaObrva)
-    ulaz.append(desnaObrva)
-    ulaz.append(gornjaSrednja)
-    ulaz.append(brada)
-    ulaz.append(levaNozdrva)
-    ulaz.append(desnaNozdrva)
-    ulaz.append(dnoNosa)
-    ulaz.append(levoLevoOko)
-    ulaz.append(levoDesnoOko)
-    ulaz.append(levoDoleDesnoOko)
-    ulaz.append(levoDoleLevoOko)
-    ulaz.append(desnoLevoOko)
-    ulaz.append(desnoDesnoOko)
-    ulaz.append(desnoDoleLevoOko)
-    ulaz.append(desnoDoleDesnoOko)
-    ulaz.append(ustaLeviUgao)
-    ulaz.append(ustaDesniugao)
-    ulaz.append(ustaSredinaGore)
-    ulaz.append(ustaSredinaDole)
-    ulaz.append(ustaGoreLevo)
-    ulaz.append(ustaGoreDesno)
-    svi = np.asarray(ulaz)
+    X.append(levaObrva)
+    X.append(desnaObrva)
+    X.append(gornjaSrednja)
+    X.append(brada)
+    X.append(levaNozdrva)
+    X.append(desnaNozdrva)
+    X.append(dnoNosa)
+    X.append(levoLevoOko)
+    X.append(levoDesnoOko)
+    X.append(levoDoleDesnoOko)
+    X.append(levoDoleLevoOko)
+    X.append(desnoLevoOko)
+    X.append(desnoDesnoOko)
+    X.append(desnoDoleLevoOko)
+    X.append(desnoDoleDesnoOko)
+    X.append(ustaLeviUgao)
+    X.append(ustaDesniugao)
+    X.append(ustaSredinaGore)
+    X.append(ustaSredinaDole)
+    X.append(ustaGoreLevo)
+    X.append(ustaGoreDesno)
+    svi = np.asarray(X)
 
     rastojanja = []
     for br in xrange(0, svi.shape[0] - 1):
@@ -85,7 +85,6 @@ def proporcije(slika, predictor, detector):
 
 
 predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
-
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)
 
