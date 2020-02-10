@@ -6,16 +6,15 @@ import prepoznavanjeLica
 import dlib
 import numpy as np
 
-
-with open('mrezaRec','rb') as f:
+with open('mrezaRec', 'rb') as f:
     model = pickle.load(f)
 
 
-def distance(a,b):
+def distance(a, b):
     # Euklidska udaljenost
     x = (a[0] - b[0]) * (a[0] - b[0])
     y = (a[1] - b[1]) * (a[1] - b[1])
-    result=np.sqrt(x+y)
+    result = np.sqrt(x + y)
     return result
 
 
@@ -29,7 +28,7 @@ def recognize(img):
     ulaz = []
 
     face = img
-    tackeLica = prepoznavanjeLica.prepoznajLice(face, detector, predictor)   #Extracts 68 dots
+    tackeLica = prepoznavanjeLica.prepoznajLice(face, detector, predictor)  # Extracts 68 dots
     levaObrva = (tackeLica[19, 0], tackeLica[19, 1])
     desnaObrva = (tackeLica[24, 0], tackeLica[24, 1])
     gornjaSrednja = ((levaObrva[0] + desnaObrva[0]) / 2, (levaObrva[1] + desnaObrva[1]) / 2)
@@ -86,20 +85,21 @@ def recognize(img):
     input1 = np.asarray(ulazNovi)
     t = model.predict(input1)
 
-    ret=''
-    if(t[0][0]>t[0][1] and t[0][0]>t[0][2]):
-        ret='Marija'
-    elif(t[0][1]>t[0][0] and t[0][1]>t[0][2]):
-        ret='Mihailo'
-    elif(t[0][2]>t[0][0] and t[0][2]>t[0][1]):
-        ret="Zoran"
+    print(t)
+    ret = ''
+    if t[0][0] > t[0][1] and t[0][0] > t[0][2]:
+        ret = 'Marija'
+    elif t[0][1] > t[0][0] and t[0][1] > t[0][2]:
+        ret = 'Mihailo'
+    elif t[0][2] > t[0][0] and t[0][2] > t[0][1]:
+        ret = "Zoran"
 
     return ret
 
 
-img_path = "IMG_TEST/marija/1.jpg"
-img = cv2.imread(img_path)
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-res = recognize(gray)
-print(res)
+# img_path = "IMG_TEST/marija/3.jpg"
+# img = cv2.imread(img_path)
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#
+# res = recognize(gray)
+# print(res)

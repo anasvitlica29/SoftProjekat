@@ -17,7 +17,7 @@ def try_gender_from_dataset():
 
 
 def prepareImages():
-    path = 'C:\Ana PSW\SoftProjekat\IMG_TEST'
+    path = 'C:\Ana PSW\SoftProjekat\IMG_TEST\marija'
     width = 268
     height = 268
     i = 1
@@ -33,3 +33,4 @@ def prepareImages():
 
         cv2.imwrite("{}.jpg".format(i), resized)
         i += 1
+

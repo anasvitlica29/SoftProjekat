@@ -1,6 +1,7 @@
 import cv2
 import detectFace
 import tryGender
+import tryRecognition
 
 #Za live odredjivanje pola
 
@@ -20,8 +21,10 @@ cv2.destroyAllWindows()
 
 (x, y, w, h) = detectFace.findFace(gray)  # dlib in action
 roi_gray = gray[y:y + h, x:x + w]  # region of interest
-tekst = tryGender.recognize(roi_gray)
-print(tekst)
+pol = tryGender.recognize(roi_gray)
+print(pol)
+osoba = tryRecognition.recognize(roi_gray)
+print(osoba)
 # cv2.imshow('img', roi_gray)
 # cv2.waitKey()
 
@@ -39,6 +42,7 @@ while True:
     cv2.rectangle(frame, (x, y), (end_coordx, end_coordy), color, stroke)
 
     #Text
+    tekst = osoba + ", " + pol
     font = cv2.FONT_HERSHEY_SIMPLEX
     color = (255, 255, 255)
     stroke = 2
