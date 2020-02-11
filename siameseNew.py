@@ -7,10 +7,12 @@ from keras.layers import Activation
 from keras.layers import Input, Lambda, Dense, Dropout, Convolution2D, MaxPooling2D, Flatten
 from keras.models import Sequential, Model
 from keras.optimizers import RMSprop
+import keras.losses
 
 
 #Za kreiranje modela za prepoznavanje osobe
 
+# Forms genuine and imposite pairs
 def get_data(size, total_sample_size):
     # read the image
     # image = read_image('Data_Recognition/s' + str(1) + '/' + str(1) + '.jpg', 'rw+')
@@ -33,7 +35,7 @@ def get_data(size, total_sample_size):
             ind1 = 0
             ind2 = 0
 
-            # read images from same directory (genuine pair)
+            # read 2 random images from same directory (genuine pair)
             while ind1 == ind2:
                 ind1 = np.random.randint(10)
                 ind2 = np.random.randint(10)
@@ -63,7 +65,7 @@ def get_data(size, total_sample_size):
     for i in range(int(total_sample_size / 10)):
         for j in range(10):
 
-            # read images from different directory (imposite pair)
+            # read 2 random images from different directory (imposite pair)
             while True:
                 ind1 = np.random.randint(3)
                 ind2 = np.random.randint(3)
@@ -75,6 +77,7 @@ def get_data(size, total_sample_size):
             img2 = cv2.imread('Dataset_Recognition/s' + str(ind2 + 1) + '/' + str(j + 1) + '.jpg')
             img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
+            # reduce size
             img1 = img1[::size, ::size]
             img2 = img2[::size, ::size]
 
@@ -111,7 +114,7 @@ def build_base_network(input_shape):
     seq.add(Dropout(.25))
 
     # flatten
-    seq.add(Flatten())
+    seq.add(Flatten())      # To one dimension
     seq.add(Dense(128, activation='relu'))
     seq.add(Dropout(0.1))
     seq.add(Dense(50, activation='relu'))
@@ -162,6 +165,7 @@ def run():
         epochs = 13
         rms = RMSprop()
 
+        keras.losses.contrastive_loss = contrastive_loss
         model = Model(input=[input_a, input_b], output=distance)
         model.compile(loss=contrastive_loss, optimizer=rms)
 
@@ -176,5 +180,10 @@ def run():
             pickle.dump(model, f)
 
 
+def load_model():
+    with open('mrezaPrepoznavanje', 'rb') as f:
+        model = pickle.load(f)
+    return model
 
-run()
+
+# run()

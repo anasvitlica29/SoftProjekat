@@ -11,16 +11,16 @@ import pickle
 
 def findFace(frame, detector, predictor):
     try:
-        dets = detector(frame, 1)
-        ret = np.matrix([[p.x, p.y] for p in predictor(frame, dets[0]).parts()])
+        dots = detector(frame, 1)
+        ret = np.matrix([[p.x, p.y] for p in predictor(frame, dots[0]).parts()])  # take pairs of (x,y) coordinates
         return ret
     except:
         pass
 
 
-def euclidean_distance(pozicija1, pozicija2):
-    x = (pozicija1[0] - pozicija2[0]) * (pozicija1[0] - pozicija2[0])
-    y = (pozicija1[1] - pozicija2[1]) * (pozicija1[1] - pozicija2[1])
+def euclidean_distance(x1, x2):
+    x = (x1[0] - x2[0]) * (x1[0] - x2[0])
+    y = (x1[1] - x2[1]) * (x1[1] - x2[1])
     res = np.sqrt(x + y)
     return res
 
@@ -108,7 +108,7 @@ for img_path in os.listdir(men_path):
     x.append(p)
     y.append([1, 0])
 
-women_path ="Dataset_Pol/zene/"
+women_path = "Dataset_Pol/zene/"
 for img_path in os.listdir(women_path):
     img = cv2.imread(women_path + img_path)
     p = proportions(img, predictor, detector)
@@ -119,9 +119,9 @@ X = np.asarray(x)
 Y = np.asarray(y)
 
 model = Sequential()
-model.add(Dense(11, input_dim=210))
+model.add(Dense(11, input_dim=210))  # Hidden layer
 model.add(Activation('sigmoid'))
-model.add(Dense(2))
+model.add(Dense(2))  # Output layer
 model.add(Activation('sigmoid'))
 sgd = SGD(lr=0.1, decay=0.001, momentum=0.7)
 model.compile(loss='mean_squared_error', optimizer=sgd)

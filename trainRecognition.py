@@ -89,6 +89,70 @@ def proportions(img, predictor, detector):
         return None
 
 
+# Tried training with 9 key distances
+def proportions1(img, predictor, detector):
+    X = []
+    dots = findFace(img, detector, predictor)
+
+    try:
+        widthLeft = (dots[0, 0], dots[1, 0])
+        widthRight = (dots[16, 0], dots[16, 1])
+        faceWidth = euclidean_distance(widthRight, widthLeft)
+
+        leftEyeInnerCorner = (dots[39, 0], dots[39, 1])
+        rightEyeInnerCorner = (dots[42, 0], dots[42, 0])
+        eyeDistance = faceWidth / euclidean_distance(leftEyeInnerCorner, rightEyeInnerCorner)
+
+        X.append(eyeDistance)
+
+        leftEyeOuterCorner = (dots[36, 0], dots[36, 1])
+        rightEyeOuterCorner = (dots[45, 0], dots[45, 1])
+        leftEyeWidth = faceWidth / euclidean_distance(leftEyeInnerCorner, leftEyeOuterCorner)
+        rightEyeWidth = faceWidth / euclidean_distance(rightEyeInnerCorner, rightEyeOuterCorner)
+
+        X.append(leftEyeWidth)
+        X.append(rightEyeWidth)
+
+        leftEyebrow = (dots[19, 0], dots[19, 1])
+        rightEyebrow = (dots[24, 0], dots[24, 1])
+        glabella = ((leftEyebrow[0] + rightEyebrow[0]) / 2, (leftEyebrow[1] + rightEyebrow[1]) / 2)
+        chin = (dots[8, 0], dots[8, 1])
+        faceHeight = euclidean_distance(glabella, chin)
+
+        noseTop = (dots[27, 0], dots[27, 1])
+        noseBottom = (dots[33, 0], dots[33, 1])
+        noseLength = faceHeight / euclidean_distance(noseTop, noseBottom)
+        noseLeft = (dots[31, 0], dots[31, 1])
+        noseRight = (dots[35, 0], dots[35, 1])
+        noseWidth = faceWidth / euclidean_distance(noseLeft, noseRight)
+
+        X.append(noseLength)
+        X.append(noseWidth)
+
+        topLipMiddle = (dots[51, 0], dots[51, 1])
+        distanceNoseMouth = faceHeight / euclidean_distance(noseBottom, topLipMiddle)
+
+        X.append(distanceNoseMouth)
+
+        lipsLeftCorner = (dots[48, 0], dots[48, 1])
+        lipsRightCorner = (dots[54, 0], dots[54, 1])
+        lipsWidth = faceWidth / euclidean_distance(lipsLeftCorner, lipsRightCorner)
+
+        X.append(lipsWidth)
+
+        diagonalLeft = faceHeight / euclidean_distance(widthLeft, chin)
+        diagonalRight = faceHeight / euclidean_distance(widthRight, chin)
+
+        X.append(diagonalLeft)
+        X.append(diagonalRight)
+
+        features = np.asarray(X)
+
+        return features
+    except:
+        return None
+
+
 predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)

@@ -24,73 +24,161 @@ def recognize(img):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
 
-    ulazNovi = []
-    ulaz = []
+    new = []
+    inp = []
 
     face = img
-    tackeLica = prepoznavanjeLica.prepoznajLice(face, detector, predictor)  # Extracts 68 dots
-    levaObrva = (tackeLica[19, 0], tackeLica[19, 1])
-    desnaObrva = (tackeLica[24, 0], tackeLica[24, 1])
-    gornjaSrednja = ((levaObrva[0] + desnaObrva[0]) / 2, (levaObrva[1] + desnaObrva[1]) / 2)
-    brada = (tackeLica[8, 0], tackeLica[8, 1])
-    levaNozdrva = (tackeLica[31, 0], tackeLica[31, 1])
-    desnaNozdrva = (tackeLica[35, 0], tackeLica[35, 1])
-    dnoNosa = (tackeLica[33, 0], tackeLica[33, 1])
-    levoLevoOko = (tackeLica[36, 0], tackeLica[36, 1])
-    levoDesnoOko = (tackeLica[39, 0], tackeLica[39, 1])
-    levoDoleDesnoOko = (tackeLica[40, 0], tackeLica[40, 1])
-    levoDoleLevoOko = (tackeLica[41, 0], tackeLica[41, 1])
-    desnoLevoOko = (tackeLica[42, 0], tackeLica[42, 1])
-    desnoDesnoOko = (tackeLica[45, 0], tackeLica[45, 1])
-    desnoDoleLevoOko = (tackeLica[47, 0], tackeLica[47, 1])
-    desnoDoleDesnoOko = (tackeLica[46, 0], tackeLica[46, 1])
-    ustaLeviUgao = (tackeLica[48, 0], tackeLica[48, 1])
-    ustaDesniugao = (tackeLica[54, 0], tackeLica[54, 1])
-    ustaSredinaGore = (tackeLica[51, 0], tackeLica[51, 1])
-    ustaSredinaDole = (tackeLica[57, 0], tackeLica[57, 1])
-    ustaGoreLevo = (tackeLica[50, 0], tackeLica[50, 1])
-    ustaGoreDesno = (tackeLica[52, 0], tackeLica[52, 1])
+    dots = prepoznavanjeLica.prepoznajLice(face, detector, predictor)  # Extracts 68 dots
+    leftEyebrow = (dots[19, 0], dots[19, 1])
+    rightEyebrow = (dots[24, 0], dots[24, 1])
+    glabella = ((leftEyebrow[0] + rightEyebrow[0]) / 2, (leftEyebrow[1] + rightEyebrow[1]) / 2)
+    chin = (dots[8, 0], dots[8, 1])
+    leftNostril = (dots[31, 0], dots[31, 1])
+    rightNostril = (dots[35, 0], dots[35, 1])
+    nose = (dots[33, 0], dots[33, 1])
+    leftOuterEye = (dots[36, 0], dots[36, 1])
+    leftInnerEye = (dots[39, 0], dots[39, 1])
+    leftBottomLidInnerEye = (dots[40, 0], dots[40, 1])
+    leftBottomLidOuterEye = (dots[41, 0], dots[41, 1])
+    rightInnerEye = (dots[42, 0], dots[42, 1])
+    rightOuterEye = (dots[45, 0], dots[45, 1])
+    rightBottomLidInnerEye = (dots[47, 0], dots[47, 1])
+    rightBottomLidOuterEye = (dots[46, 0], dots[46, 1])
+    mouthLeft = (dots[48, 0], dots[48, 1])
+    mouthRight = (dots[54, 0], dots[54, 1])
+    mouthUpperLipMiddle = (dots[51, 0], dots[51, 1])
+    mouthLowerLipMiddle = (dots[57, 0], dots[57, 1])
+    mouthUpperLipLeft = (dots[50, 0], dots[50, 1])
+    mouthUpperLipRight = (dots[52, 0], dots[52, 1])
 
-    visinaLica = distance(gornjaSrednja, brada)
+    faceHeight = distance(glabella, chin)
 
-    ulaz.append(levaObrva)
-    ulaz.append(desnaObrva)
-    ulaz.append(gornjaSrednja)
-    ulaz.append(brada)
-    ulaz.append(levaNozdrva)
-    ulaz.append(desnaNozdrva)
-    ulaz.append(dnoNosa)
-    ulaz.append(levoLevoOko)
-    ulaz.append(levoDesnoOko)
-    ulaz.append(levoDoleDesnoOko)
-    ulaz.append(levoDoleLevoOko)
-    ulaz.append(desnoLevoOko)
-    ulaz.append(desnoDesnoOko)
-    ulaz.append(desnoDoleLevoOko)
-    ulaz.append(desnoDoleDesnoOko)
-    ulaz.append(ustaLeviUgao)
-    ulaz.append(ustaDesniugao)
-    ulaz.append(ustaSredinaGore)
-    ulaz.append(ustaSredinaDole)
-    ulaz.append(ustaGoreLevo)
-    ulaz.append(ustaGoreDesno)
-    svi = np.asarray(ulaz)
-    rastojanja = []
-    for br in xrange(0, svi.shape[0] - 1):
-        for dr in xrange(br + 1, svi.shape[0]):
-            pozicija1 = svi[br]
-            pozicija2 = svi[dr]
-            rastojanja.append(visinaLica / distance(pozicija1, pozicija2))
-    ulazNovi.append(rastojanja)
-    input1 = np.asarray(ulazNovi)
-    t = model.predict(input1)
+    inp.append(leftEyebrow)
+    inp.append(rightEyebrow)
+    inp.append(glabella)
+    inp.append(chin)
+    inp.append(leftNostril)
+    inp.append(rightNostril)
+    inp.append(nose)
+    inp.append(leftOuterEye)
+    inp.append(leftInnerEye)
+    inp.append(leftBottomLidInnerEye)
+    inp.append(leftBottomLidOuterEye)
+    inp.append(rightInnerEye)
+    inp.append(rightOuterEye)
+    inp.append(rightBottomLidInnerEye)
+    inp.append(rightBottomLidOuterEye)
+    inp.append(mouthLeft)
+    inp.append(mouthRight)
+    inp.append(mouthUpperLipMiddle)
+    inp.append(mouthLowerLipMiddle)
+    inp.append(mouthUpperLipLeft)
+    inp.append(mouthUpperLipRight)
+    features = np.asarray(inp)
+
+    props = []
+    for i in xrange(0, features.shape[0] - 1):
+        for j in xrange(i + 1, features.shape[0]):
+            x = features[i]
+            y = features[j]
+            props.append(faceHeight / distance(x, y))
+    new.append(props)
+    X = np.asarray(new)
+    t = model.predict(X)
 
     print(t)
     ret = ''
     if t[0][0] > t[0][1] and t[0][0] > t[0][2] and t[0][0] > t[0][3]:
-        ret = 'Marija'
+        ret = "Marija"
     elif t[0][1] > t[0][0] and t[0][1] > t[0][2] and t[0][1] > t[0][3]:
-        ret = 'Mihailo'
+        ret = "Mihailo"
+    elif t[0][2] > t[0][0] and t[0][2] > t[0][1] and t[0][2] > t[0][3]:
+        ret = "Zoran"
+    elif t[0][3] > t[0][0] and t[0][3] > t[0][1] and t[0][3] > t[0][2]:
+        ret = "Ana"
+
+    return ret
+
+def recognize1(img):
+    # load dlib detector and predictor
+    predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor(predictor_path)
+
+    new = []
+    inp = []
+
+    face = img
+    dots = prepoznavanjeLica.prepoznajLice(face, detector, predictor)  # Extracts 68 dots
+    widthLeft = (dots[0, 0], dots[1, 0])
+    widthRight = (dots[16, 0], dots[16, 1])
+    faceWidth = distance(widthRight, widthLeft)
+
+    leftEyeInnerCorner = (dots[39, 0], dots[39, 1])
+    rightEyeInnerCorner = (dots[42, 0], dots[42, 0])
+    eyeDistance = faceWidth / distance(leftEyeInnerCorner, rightEyeInnerCorner)
+
+    inp.append(eyeDistance)
+
+    leftEyeOuterCorner = (dots[36, 0], dots[36, 1])
+    rightEyeOuterCorner = (dots[45, 0], dots[45, 1])
+    leftEyeWidth = faceWidth / distance(leftEyeInnerCorner, leftEyeOuterCorner)
+    rightEyeWidth = faceWidth / distance(rightEyeInnerCorner, rightEyeOuterCorner)
+
+    inp.append(leftEyeWidth)
+    inp.append(rightEyeWidth)
+
+    leftEyebrow = (dots[19, 0], dots[19, 1])
+    rightEyebrow = (dots[24, 0], dots[24, 1])
+    glabella = ((leftEyebrow[0] + rightEyebrow[0]) / 2, (leftEyebrow[1] + rightEyebrow[1]) / 2)
+    chin = (dots[8, 0], dots[8, 1])
+    faceHeight = distance(glabella, chin)
+
+    noseTop = (dots[27, 0], dots[27, 1])
+    noseBottom = (dots[33, 0], dots[33, 1])
+    noseLength = faceHeight / distance(noseTop, noseBottom)
+    noseLeft = (dots[31, 0], dots[31, 1])
+    noseRight = (dots[35, 0], dots[35, 1])
+    noseWidth = faceWidth / distance(noseLeft, noseRight)
+
+    inp.append(noseLength)
+    inp.append(noseWidth)
+
+    topLipMiddle = (dots[51, 0], dots[51, 1])
+    distanceNoseMouth = faceHeight / distance(noseBottom, topLipMiddle)
+
+    inp.append(distanceNoseMouth)
+
+    lipsLeftCorner = (dots[48, 0], dots[48, 1])
+    lipsRightCorner = (dots[54, 0], dots[54, 1])
+    lipsWidth = faceWidth / distance(lipsLeftCorner, lipsRightCorner)
+
+    inp.append(lipsWidth)
+
+    diagonalLeft = faceHeight / distance(widthLeft, chin)
+    diagonalRight = faceHeight / distance(widthRight, chin)
+
+    inp.append(diagonalLeft)
+    inp.append(diagonalRight)
+
+    features = np.asarray(inp)
+
+    # props = []
+    # for i in xrange(0, features.shape[0] - 1):
+    #     for j in xrange(i + 1, features.shape[0]):
+    #         x = features[i]
+    #         y = features[j]
+    #         props.append(faceHeight / distance(x, y))
+    new.append(features)
+    X = np.asarray(new)
+    t = model.predict(X)
+
+    print(t)
+    ret = ''
+    if t[0][0] > t[0][1] and t[0][0] > t[0][2] and t[0][0] > t[0][3]:
+        ret = "Marija"
+    elif t[0][1] > t[0][0] and t[0][1] > t[0][2] and t[0][1] > t[0][3]:
+        ret = "Mihailo"
     elif t[0][2] > t[0][0] and t[0][2] > t[0][1] and t[0][2] > t[0][3]:
         ret = "Zoran"
     elif t[0][3] > t[0][0] and t[0][3] > t[0][1] and t[0][3] > t[0][2]:
