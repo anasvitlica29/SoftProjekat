@@ -17,7 +17,7 @@ def try_gender_from_dataset():
 
 
 def prepareImages():
-    path = 'C:\Ana PSW\SoftProjekat\IMG_TEST\marija'
+    path = 'C:\Ana PSW\SoftProjekat\IMG_TEST\ja'
     width = 268
     height = 268
     i = 1
@@ -27,10 +27,10 @@ def prepareImages():
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         (x, y, w, h) = detectFace.findFace(gray)  # dlib in action
-        print(x)
         roi_gray = gray[y:y + h, x:x + w]  # region of interest
         resized = cv2.resize(roi_gray, (width, height), interpolation=cv2.INTER_CUBIC)
 
         cv2.imwrite("{}.jpg".format(i), resized)
         i += 1
 
+prepareImages()

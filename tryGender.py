@@ -8,7 +8,6 @@ import numpy as np
 
 
 with open('mrezaPol','rb') as f:
-
     model = pickle.load(f)   #load existing model
 
 

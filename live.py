@@ -11,7 +11,7 @@ while True:
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     cnt += 1
-    if cnt == 100:
+    if cnt == 25:
         break
 cap.release()
 cv2.destroyAllWindows()

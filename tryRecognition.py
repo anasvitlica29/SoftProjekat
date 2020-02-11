@@ -87,17 +87,19 @@ def recognize(img):
 
     print(t)
     ret = ''
-    if t[0][0] > t[0][1] and t[0][0] > t[0][2]:
+    if t[0][0] > t[0][1] and t[0][0] > t[0][2] and t[0][0] > t[0][3]:
         ret = 'Marija'
-    elif t[0][1] > t[0][0] and t[0][1] > t[0][2]:
+    elif t[0][1] > t[0][0] and t[0][1] > t[0][2] and t[0][1] > t[0][3]:
         ret = 'Mihailo'
-    elif t[0][2] > t[0][0] and t[0][2] > t[0][1]:
+    elif t[0][2] > t[0][0] and t[0][2] > t[0][1] and t[0][2] > t[0][3]:
         ret = "Zoran"
+    elif t[0][3] > t[0][0] and t[0][3] > t[0][1] and t[0][3] > t[0][2]:
+        ret = "Ana"
 
     return ret
 
 
-# img_path = "IMG_TEST/marija/3.jpg"
+# img_path = "IMG_TEST/marija/9.jpg"
 # img = cv2.imread(img_path)
 # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 #
