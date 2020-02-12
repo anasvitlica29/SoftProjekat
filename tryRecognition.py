@@ -99,6 +99,7 @@ def recognize(img):
 
     return ret
 
+
 def recognize1(img):
     # load dlib detector and predictor
     predictor_path = "dlib/shape_predictor_68_face_landmarks.dat"
@@ -185,7 +186,6 @@ def recognize1(img):
         ret = "Ana"
 
     return ret
-
 
 # img_path = "IMG_TEST/marija/9.jpg"
 # img = cv2.imread(img_path)
